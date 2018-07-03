@@ -14,7 +14,7 @@ public class DDOServer extends CenterServerImpl{
 		String centerRegistryHost = "localhost";
 		int centerRegistryUDPPort = 8190;
 		String serverName = "DDO";
-		CenterServerImpl centerServer = new CenterServerImpl(serverName, 8182,centerRegistryHost, centerRegistryUDPPort);		// server implementation class
+		CenterServerImpl centerServer = new CenterServerImpl(serverName, 8182, centerRegistryHost, centerRegistryUDPPort);		// server implementation class
 
 		Endpoint e = Endpoint.publish("http://localhost:8082/DDOServer", centerServer);		// binding it to service registry --> WSDL file is created
 		
