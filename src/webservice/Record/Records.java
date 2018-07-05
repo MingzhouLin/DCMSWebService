@@ -1,7 +1,8 @@
 package webservice.Record;
-    /*
-SuperClass for records classes used in application, own genRecordId is overriden in children implementation.
- */
+
+/*
+  SuperClass for records classes used in application, own genRecordId is overriden in children implementation.
+*/
 
 import java.io.*;
 import java.util.Random;

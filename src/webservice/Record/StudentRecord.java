@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /*
-StudentRecord class, overrides superclass genRecordId method
- */
+  StudentRecord class, overrides superclass genRecordId method
+*/
 
 public class StudentRecord extends Records implements Serializable {
 

@@ -24,11 +24,6 @@ import java.util.stream.Collectors;
 // endpointInterface = "packageName.interfaceName"
 @WebService(endpointInterface = "webservice.CenterServer")
 public class CenterServerImpl implements CenterServer {
-	
-	 /*
-
-     */
-
 
 	private String centerName;
 	public HashMap<Character, ArrayList<Records>> database = new HashMap<>();
@@ -42,8 +37,8 @@ public class CenterServerImpl implements CenterServer {
 	}
 
 	/*
-         Constructor besides of creating supplementary udp listeners, registers object in CenterRegistry.
-          */
+	  Constructor besides of creating supplementary udp listeners, registers object in CenterRegistry.
+  	*/
 	public CenterServerImpl(String centerName, int portNumber, String centerRegistryHost, int centerRegistryUDPPort) throws Exception {
 		super();
 		this.portNumber = portNumber;
@@ -62,8 +57,8 @@ public class CenterServerImpl implements CenterServer {
 	}
 
 	/*
-     Validates the record ID for existence in localDB, in case of existence - regenerates ID and validates again.
-      */
+      Validates the record ID for existence in localDB, in case of existence - regenerates ID and validates again.
+    */
 	private void validateRecordId(Records inRecord, char key) {
 		String recordId = inRecord.getRecordID();
 		if (database.get(key) != null) {
@@ -77,9 +72,6 @@ public class CenterServerImpl implements CenterServer {
 		}
 	}
 
-	/*
-    I don't think we need comments over this, code is obvious.
-     */
 	public String createTRecord(String managerId, String firstName, String lastName, String address, String phone, String specialization, String location) {
 		TeacherRecord teacherRecord = new TeacherRecord(firstName, lastName, address, phone, specialization, location);
 		char key = lastName.charAt(0);
@@ -119,8 +111,8 @@ public class CenterServerImpl implements CenterServer {
 	}
 
 	/*
-    Concurrent implementation of getRecordCounts using Java8 parallel streams.
-     */
+      Concurrent implementation of getRecordCounts using Java8 parallel streams.
+    */
 	public String getRecordCounts(String managerId) {
 		String result;
 		//gets the list of registered servers.
@@ -143,8 +135,8 @@ public class CenterServerImpl implements CenterServer {
 	}
 
 	/*
-    Returns local record count for the particular object instance, which is executed by some instance getRecordCount query.
-     */
+      Returns local record count for the particular object instance, which is executed by some instance getRecordCount query.
+    */
 	public int getLocalRecordCount() {
 		int sum = 0;
 		for (ArrayList<Records> records :
@@ -155,8 +147,8 @@ public class CenterServerImpl implements CenterServer {
 	}
 
 	/*
-    Edits record using java reflection, to dynamically get the object class (either Student or Teacher) and editable attributes.
-     */
+      Edits record using java reflection, to dynamically get the object class (either Student or Teacher) and editable attributes.
+    */
 	public String editRecord(String managerId, String recordID, String fieldName, String newValue) {
 		String result = "";
 		Boolean ableModified = true;
@@ -224,10 +216,10 @@ public class CenterServerImpl implements CenterServer {
 		}
 		return result;
 	}
+
     /*
        transfer record from the server associated with manager if it is varified to the remotecenter which is given by name
-     */
-
+    */
 	public String transferRecord(String managerID, String recordID, String remoteCenterServerName) {
 		String result = "";
 		boolean has = false;

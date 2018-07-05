@@ -7,11 +7,6 @@ import javax.jws.soap.SOAPBinding.Style;
 import java.util.ArrayList;
 
 
-/**
-* Addition Interface
-* @author Akash Shah
-*/
-
 @WebService
 public interface CenterServer {
 
