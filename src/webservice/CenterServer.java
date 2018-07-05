@@ -25,5 +25,8 @@ public interface CenterServer {
 	public String editRecord ( String managerId,String recordID, String fieldName,String newValue);
 	@WebMethod
 	public String transferRecord(String managerID, String recordID, String remoteCenterServerName);
+	@WebMethod
 	public int getLocalRecordCount();
+	@WebMethod
+	public void shutdown();
 }

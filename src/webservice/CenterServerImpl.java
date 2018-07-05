@@ -12,6 +12,9 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.beans.Statement;
 import java.net.InetAddress;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -283,11 +286,12 @@ public class CenterServerImpl implements CenterServer {
 		return result;
 	}
 
-//	public void shutdown() {
-//
-//		UDPClient.request("unregister:" + centerName, centerRegistryHost, centerRegistryUDPPort);
-//		orb.shutdown(false);
-//
-//	}
+	public void shutdown() {
+
+		UDPClient.request("unregister:" + centerName, centerRegistryHost, centerRegistryUDPPort);
+			udpServer.stopServer();
+
+
+	}
 
 }
