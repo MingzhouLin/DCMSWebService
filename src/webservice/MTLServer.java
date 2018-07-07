@@ -13,10 +13,8 @@ public class MTLServer{
 	}
 		
 	private static void ws_setup() throws Exception {
-		String centerRegistryHost = "localhost";
-		int centerRegistryUDPPort = 8190;
 		String serverName = "MTL";
-		CenterServerImpl centerServer = new CenterServerImpl(serverName, 8180,centerRegistryHost, centerRegistryUDPPort);		// server implementation class
+		CenterServerImpl centerServer = new CenterServerImpl(serverName, 8180);		// server implementation class
 
 		Endpoint e = Endpoint.publish("http://localhost:8080/MTLServer", centerServer);		// binding it to service registry --> WSDL file is created
 		

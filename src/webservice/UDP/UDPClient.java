@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.*;
 
 public class UDPClient {
-    public static String request(String operation, String hostname ,int centerPortNumber){
+    public static String request(String operation ,int centerPortNumber){
         String receivedInfor = "";
         DatagramSocket datagramSocket = null;
         try {
@@ -36,7 +36,7 @@ public class UDPClient {
         }
         return receivedInfor;
     }
-    public static String request(byte[] objBytes,String hostname ,int centerPortNumber){
+    public static String request(byte[] objBytes, int centerPortNumber){
         String receivedInfor = "";
         DatagramSocket datagramSocket = null;
         try {

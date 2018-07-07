@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 // endpointInterface = "packageName.interfaceName"
 @WebService(endpointInterface = "webservice.CenterServer")
@@ -28,9 +29,11 @@ public class CenterServerImpl implements CenterServer {
 	private String centerName;
 	public HashMap<Character, ArrayList<Records>> database = new HashMap<>();
 	private UDPServer udpServer;
-	private int portNumber;
-	private String centerRegistryHost;
-	private int centerRegistryUDPPort;
+	// desired by TA solution of udp address/port hardcoding, since we hardcoding everything,
+	// we just assume that ip address is always "localhost"
+	public static int[] hardcodedServerPorts = {8180, 8181, 8182};
+	public static String[] hardcodedServerNames = {"MTL", "LVL", "DDO"};
+
 	private Thread thread;
 
 	public CenterServerImpl() {
@@ -39,16 +42,12 @@ public class CenterServerImpl implements CenterServer {
 	/*
 	  Constructor besides of creating supplementary udp listeners, registers object in CenterRegistry.
   	*/
-	public CenterServerImpl(String centerName, int portNumber, String centerRegistryHost, int centerRegistryUDPPort) throws Exception {
+	public CenterServerImpl(String centerName, int portNumber) throws Exception {
 		super();
-		this.portNumber = portNumber;
-		this.centerRegistryHost = centerRegistryHost;
-		this.centerRegistryUDPPort = centerRegistryUDPPort;
 		this.centerName = centerName;
 		udpServer = new UDPServer(portNumber, this);
 		thread = new Thread(udpServer);
 		thread.start();
-		UDPClient.request("register:" + centerName + ":" + InetAddress.getLocalHost().getHostName() + ":" + this.portNumber, centerRegistryHost, centerRegistryUDPPort);
 
 	}
 
@@ -115,17 +114,14 @@ public class CenterServerImpl implements CenterServer {
     */
 	public String getRecordCounts(String managerId) {
 		String result;
-		//gets the list of registered servers.
-		String reply = UDPClient.request("getservers", centerRegistryHost, centerRegistryUDPPort);
-		String[] serverList = reply.split(";");
 
-		//generates result querying servers from list above in parallel
-		result = Arrays.stream(serverList).parallel().map((v) ->
+		//generates result querying servers from hardcoded udp ports, as per TA recommendations
+
+		result = IntStream.rangeClosed(0,2).parallel().mapToObj((v) ->
 		{
-			String[] serverParams = v.split(":");
 			byte[] getCount = ByteUtility.toByteArray("getCount");
-			String result1 = serverParams[0] + ":" + UDPClient.request(getCount, serverParams[1], Integer.parseInt(serverParams[2]));
-			System.out.printf("\n"+serverParams[0]+" processed\n");
+			String result1 = hardcodedServerNames[v] + ":" + UDPClient.request(getCount, hardcodedServerPorts[v]);
+			System.out.printf("\n"+hardcodedServerNames[v]+" on port "+hardcodedServerPorts[v]+" processed\n");
 			return result1;
 		}).collect(Collectors.joining(" "));
 
@@ -246,15 +242,9 @@ public class CenterServerImpl implements CenterServer {
              using udp to request the function and parse the object to bytes to do the work.
              */
 			if (ableToTransfer) {
-				String reply = UDPClient.request("getservers", centerRegistryHost, centerRegistryUDPPort);
-				String[] serverList = reply.split(";");
-				for (String server : serverList) {
-					String[] serverParams = server.split(":");
-					if (serverParams[0].equals(remoteCenterServerName)) {
-						String response = UDPClient.request(serializedMessage, serverParams[1], Integer.parseInt(serverParams[2]));
-						result += response;
-					}
-				}
+				result +=  IntStream.rangeClosed(0,2).filter((v) -> hardcodedServerNames[v].equals(remoteCenterServerName))
+						.mapToObj((v) -> UDPClient.request(serializedMessage,  hardcodedServerPorts[v])).collect(Collectors.joining());
+
 				if (toBeModified.remove(transferedRecord)) {
 					result += recordID + " is removed from " + getCenterName();
 				}
@@ -280,11 +270,7 @@ public class CenterServerImpl implements CenterServer {
 	}
 
 	public void shutdown() {
-
-		UDPClient.request("unregister:" + centerName, centerRegistryHost, centerRegistryUDPPort);
 			udpServer.stopServer();
-
-
 	}
 
 }
