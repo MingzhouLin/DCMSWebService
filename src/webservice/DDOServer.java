@@ -4,7 +4,7 @@ import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
 import java.util.Scanner;
 
-public class DDOServer extends CenterServerImpl{
+public class DDOServer {
 
 	public static void main(String[] args) throws Exception{
 		

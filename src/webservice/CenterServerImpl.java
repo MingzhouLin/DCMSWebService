@@ -218,7 +218,7 @@ public class CenterServerImpl implements CenterServer {
 	}
 
     /*
-       transfer record from the server associated with manager if it is varified to the remotecenter which is given by name
+       transfer record from the server associated with manager if it is verified to the remotecenter which is given by name
     */
 	public String transferRecord(String managerID, String recordID, String remoteCenterServerName) {
 		String result = "";
@@ -236,7 +236,7 @@ public class CenterServerImpl implements CenterServer {
 				}
 			}
             /*
-               check if the id is existing and the remotecenter is valide
+               check if the id is existing and the remotecenter is valid
              */
 			boolean isValidatedCenter = remoteCenterServerName.equals("MTL") || remoteCenterServerName.equals("LVL") || remoteCenterServerName.equals("DDO");
 			boolean ableToTransfer = isValidatedCenter && has && !centerName.equals(remoteCenterServerName);

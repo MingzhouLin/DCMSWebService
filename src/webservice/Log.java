@@ -24,7 +24,7 @@ public class Log {
 
         BufferedWriter clientBufferedWriter = null;
         BufferedWriter serverBufferedWriter = null;
-        String clientInformation = time + " | " + operation + " | " + managerId.substring(0, 3) + "MTLServer" + " | " + result + "\n";
+        String clientInformation = time + " | " + operation + " | " + managerId.substring(0, 3) + "Server" + " | " + result + "\n";
         String serverInformation = time + " | " + managerId + " | " + operation + " | " + result + "\n";
         if (inforServerFile.exists()) {
             try {
