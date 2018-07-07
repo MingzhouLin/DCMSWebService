@@ -208,6 +208,7 @@ public class CenterServerImpl implements CenterServer {
 						result = "fieldName doesn't match record type";
 						String operation = "edit: " + fieldName;
 						Log.log(Log.getCurrentTime(), managerId, operation, result);
+						return result;
 					}
 				}
 			}
